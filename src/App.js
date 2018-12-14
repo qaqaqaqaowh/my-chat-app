@@ -1,25 +1,51 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import MessageForm from './container/MessageForm'
+import MessageDisplay from './container/MessageDisplay'
+import UserList from './component/UserList'
+import Socket from './utils/socket'
+import MQ from 'react-responsive'
+
+import './App.css'
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      messages: [],
+      users: [],
+      currentUser: ""
+    }
+  }
+
+  handleNewMessage = (msg) => {
+    Socket.emit("BROADCAST_MESSAGE", {username: this.state.currentUser, message: msg, timestamp: Date.now()})
+  }
+
+  componentDidMount() {
+
+    Socket.on('GET_CURRENT_USER', (user) => {
+      this.setState({currentUser: user.username})
+    })
+
+    Socket.on('UPDATE_USER_LIST', users => {
+      this.setState({users: [...users]})
+    })
+
+    Socket.on("RECEIVE_BROADCAST", (msg) => {
+      this.setState({messages: [...this.state.messages, msg]})
+    })
+
+    Socket.emit('NEW_USER')
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div onKeyPress={() => {this.form.input.focus()}} tabIndex="0" className="App" style={{textAlign: 'center', display: 'flex', height: '100vh'}}>
+        <MQ query="(min-device-width: 576px)">
+          <UserList users={this.state.users}/>
+        </MQ>
+        <MessageDisplay messages={this.state.messages}/>
+        <MessageForm newMessage={this.handleNewMessage} ref={(form) => {this.form = form}}/>
       </div>
     );
   }
