@@ -40,11 +40,14 @@ class App extends Component {
 
   render() {
     return (
-      <div onKeyPress={() => {this.form.input.focus()}} tabIndex="0" className="App" style={{textAlign: 'center', display: 'flex', height: '100vh'}}>
+      <div onKeyPress={() => {this.form.input.focus()}} tabIndex="0" className="App" style={{textAlign: 'center', display: 'flex', height: '100vh', flexDirection: 'column'}}>
         <MQ query="(min-device-width: 576px)">
           <UserList users={this.state.users}/>
         </MQ>
         <MessageDisplay messages={this.state.messages}/>
+        <MQ query="(max-device-width: 1025px)">
+          <MessageForm isMobile={true} newMessage={this.handleNewMessage} ref={(form) => {this.form = form}}/>
+        </MQ>
         <MessageForm newMessage={this.handleNewMessage} ref={(form) => {this.form = form}}/>
       </div>
     );

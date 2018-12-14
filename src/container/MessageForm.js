@@ -23,10 +23,15 @@ class MessageForm extends Component {
   }
 
   render() {
+    const style = this.props.isMobile ? {} : {position: 'fixed', top: '100vh', width: '100vw'}
     return (
-      <form onSubmit={this.handleSubmit} style={{position: 'fixed', top: '100vh', width: '100vw'}}>
-        <Overlay text={this.state.input}/>
+      <form onSubmit={this.handleSubmit} style={style}>
+        {
+          this.props.isMobile ? null :
+          <Overlay text={this.state.input}/>
+        }
         <input ref={(input) => {this.input = input}} onChange={this.handleMessageInput} type="text" placeholder="Message" value={this.state.input} autoFocus/>
+        <input type="submit" value="Send" />
       </form>
     )
   }
