@@ -18,7 +18,7 @@ class App extends Component {
   }
 
   handleNewMessage = (msg) => {
-    Socket.emit("BROADCAST_MESSAGE", {username: this.state.currentUser, message: msg, timestamp: Date.now()})
+    Socket.emit("BROADCAST_MESSAGE", {username: "Itsa me Mario", message: msg, timestamp: Date.now()})
   }
 
   componentDidMount() {
