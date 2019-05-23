@@ -23,7 +23,7 @@ class App extends Component {
 
   componentDidMount() {
 
-    Socket.on('GET_CURRENT_USER', (user) => {
+    Socket.on('GET_CURRENT_USER', user => {
       this.setState({currentUser: user.username})
     })
 
@@ -31,7 +31,7 @@ class App extends Component {
       this.setState({users: [...users]})
     })
 
-    Socket.on("RECEIVE_BROADCAST", (msg) => {
+    Socket.on("RECEIVE_BROADCAST", msg => {
       this.setState({messages: [...this.state.messages, msg]})
     })
 
@@ -48,10 +48,21 @@ class App extends Component {
         <MQ query="(max-device-width: 1025px)">
           <MessageForm isMobile={true} newMessage={this.handleNewMessage} ref={(form) => {this.form = form}}/>
         </MQ>
-        <MessageForm newMessage={this.handleNewMessage} ref={(form) => {this.form = form}}/>
+        <MQ query="(min-device-width: 1026px)">
+          <MessageForm newMessage={this.handleNewMessage} ref={(form) => {this.form = form}}/>
+        </MQ>
       </div>
     );
   }
 }
 
 export default App;
+
+// setInterval(() => {
+// let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+// nativeInputValueSetter.call(document.querySelector("form input"), 'spam');
+
+// let ev2 = new Event('input', { bubbles: true});
+// document.querySelector("form input").dispatchEvent(ev2);
+// document.querySelector("form input[type=submit]").click()
+// }, 0.001)

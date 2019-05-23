@@ -30,7 +30,7 @@ class MessageForm extends Component {
           this.props.isMobile ? null :
           <Overlay text={this.state.input}/>
         }
-        <input ref={(input) => {this.input = input}} onChange={this.handleMessageInput} type="text" placeholder="Message" value={this.state.input} autoFocus/>
+        <input ref={(input) => {this.input = input}} onChange={this.handleMessageInput} type="text" placeholder="Message" value={this.state.input} autoFocus={this.props.isMobile ? false : true}/>
         <input type="submit" value="Send" />
       </form>
     )
